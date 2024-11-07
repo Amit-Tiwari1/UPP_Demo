@@ -9,6 +9,7 @@ import {
   Button,
   Checkbox,
   DatePicker,
+  Divider,
   Modal,
   ModalBody,
   ModalContent,
@@ -22,6 +23,9 @@ import axios from "axios";
 
 export default function Page() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [aadhaarChecked, setAadhaarChecked] = useState(false);
+  const [withoutAadhaarChecked, setWithoutAadhaarChecked] = useState(false);
+
   const [aadhaarNumber, setAadhaarNumber] = useState("");
   const [passportNumber, setPassportNumber] = useState("");
 
@@ -51,7 +55,7 @@ export default function Page() {
               headers: {
                 Authorization: `Bearer ${getLoginToken}`,
               },
-            },
+            }
           );
           setPanData(panCardResponse.data);
           if (panCardResponse.data && panCardResponse.data.data.panCardNumber) {
@@ -64,22 +68,22 @@ export default function Page() {
               headers: {
                 Authorization: `Bearer ${getLoginToken}`,
               },
-            },
+            }
           );
 
           if (drivingLicenseResponse.data && drivingLicenseResponse.data.data) {
             setDrivingLicenseData(drivingLicenseResponse.data);
             setDrivingLicenseNumber(
-              drivingLicenseResponse.data.data.drivingLicenseNumber,
+              drivingLicenseResponse.data.data.drivingLicenseNumber
             );
             setDrivingIssuingAuthority(
-              drivingLicenseResponse.data.data.drivingIssuingAuthority,
+              drivingLicenseResponse.data.data.drivingIssuingAuthority
             );
             setDrivingPlaceOfIssue(
-              drivingLicenseResponse.data.data.drivingPlaceOfIssue,
+              drivingLicenseResponse.data.data.drivingPlaceOfIssue
             );
             setdrivingDateOfIssue(
-              drivingLicenseResponse.data.data.drivingDateOfIssue,
+              drivingLicenseResponse.data.data.drivingDateOfIssue
             );
           }
         } catch (error) {
@@ -104,11 +108,23 @@ export default function Page() {
       router.push("/declaration");
     }
   };
+  const handleAadhaarCheckboxChange = () => {
+    setAadhaarChecked(!aadhaarChecked);
+    setWithoutAadhaarChecked(false);
+  };
+  const handleWithoutAadhaarCheckboxChange = () => {
+    setWithoutAadhaarChecked(!withoutAadhaarChecked);
+    setAadhaarChecked(false);
+  };
 
   return (
     <>
       <div className="grid grid-cols-1 border-3 border-gray-200 border rounded-t-lg">
-        <ProgressBar currentStep={currentStep} totalSteps={totalSteps} isCompleted={isCompleted}/>
+        <ProgressBar
+          currentStep={currentStep}
+          totalSteps={totalSteps}
+          isCompleted={isCompleted}
+        />
 
         <div className="flex items-center bg-green-600 text-white p-4 shadow-lg rounded-t-lg">
           <Image
@@ -186,7 +202,7 @@ export default function Page() {
                   }
                 >
                   <div className="i_agree">
-                    <Checkbox>
+                    <Checkbox onChange={handleAadhaarCheckboxChange} isSelected={aadhaarChecked}>
                       <p className="text-slate-500 text-sm md:text-medium">
                         I, holder of Aadhaar number mentioned below, hereby
                         voluntarily give my consent to UPPRPB to use my Aadhaar
@@ -200,36 +216,38 @@ export default function Page() {
                       </p>
                     </Checkbox>
                   </div>
-                  <div className="grid md:grid-cols-2 gap-3 md:gap-8 mt-8">
-                    <Input
-                      type="text"
-                      label="Aadhaar number. आधार संख्या"
-                      labelPlacement="outside"
-                      variant="bordered"
-                      radius="sm"
-                      placeholder="XXXX XXXX XXXX"
-                      isRequired
-                      endContent={
-                        <span className="material-symbols-rounded">
-                          credit_card
-                        </span>
-                      }
-                      onChange={(e) => setAadhaarNumber(e.target.value)}
-                    />
-                    <Button
-                      onPress={onOpen}
-                      className="font-medium bg-black text-white mt-auto"
-                    >
-                      Verify Aadhar. आधार सत्यापित करें
-                    </Button>
-                  </div>
+                 {aadhaarChecked && (
+                   <div className="grid md:grid-cols-2 gap-3 md:gap-8 mt-8 mb-5">
+                   <Input
+                     type="text"
+                     label="Aadhaar number. आधार संख्या"
+                     labelPlacement="outside"
+                     variant="bordered"
+                     radius="sm"
+                     placeholder="XXXX XXXX XXXX"
+                     isRequired
+                     endContent={
+                       <span className="material-symbols-rounded">
+                         credit_card
+                       </span>
+                     }
+                     onChange={(e) => setAadhaarNumber(e.target.value)}
+                   />
+                   <Button
+                     onPress={onOpen}
+                     className="font-medium bg-black text-white mt-auto"
+                   >
+                     Verify Aadhar. आधार सत्यापित करें
+                   </Button>
+                 </div>
+                 )}
                 </AccordionItem>
               </Accordion>
             </div>
-
+<Divider/>
             <div className="flex flex-col gap-8">
               <div className="i_agree my-3">
-                <Checkbox>
+                <Checkbox onChange={handleWithoutAadhaarCheckboxChange} isSelected={withoutAadhaarChecked}>
                   <p className="text-slate-500 text-sm md:text-medium">
                     I want to proceed with the registration process without
                     Aadhar verification and I understand that High
@@ -241,12 +259,6 @@ export default function Page() {
                   </p>
                 </Checkbox>
               </div>
-
-              <Note
-                note={
-                  "As you have completed the process without Aadhaar verification, please provide the details of one of the IDs mentioned below. चूंकि आपने आधार सत्यापन के बिना प्रक्रिया पूरी की है, कृपया नीचे उल्लिखित आईडी में से किसी एक का विवरण प्रदान करें।"
-                }
-              />
 
               {/* <Input
                 type="text"
@@ -268,65 +280,73 @@ export default function Page() {
               /> */}
             </div>
 
-            <p className="text-center font-medium my-12">or</p>
+            {/* <p className="text-center font-medium my-12">or</p> */}
 
-            <div className="flex flex-col gap-8">
-              <Input
-                type="text"
-                label="Driving License number (ड्राइविंग लाइसेंस नंबर)"
-                labelPlacement="outside"
-                variant="bordered"
-                radius="sm"
-                placeholder="Enter driving licence number"
-                isRequired
-                value={drivingLicenseNumber}
-                endContent={
-                  <span className="material-symbols-rounded">credit_card</span>
-                }
-                onChange={(e) => setDrivingLicenseNumber(e.target.value)}
-              />
-              <Input
-                type="text"
-                label="Issuing Authority. जारी करने वाला प्राधिकारी"
-                labelPlacement="outside"
-                variant="bordered"
-                radius="sm"
-                placeholder="Enter Issuing Authority"
-                isRequired
-                value={drivingIssuingAuthority}
-                endContent={
-                  <span className="material-symbols-rounded">edit</span>
-                }
-                onChange={(e) => setPanCardNumber(e.target.value)}
-              />
-              <Input
-                type="text"
-                label="Place of issue. जारी करने का स्थान"
-                labelPlacement="outside"
-                variant="bordered"
-                radius="sm"
-                placeholder="Enter Issuing Place"
-                isRequired
-                value={drivingPlaceOfIssue}
-                endContent={
-                  <span className="material-symbols-rounded">edit</span>
-                }
-              />
-               <Input
-                type="text"
-                label="Place of issue. जारी करने का स्थान"
-                labelPlacement="outside"
-                variant="bordered"
-                radius="sm"
-                placeholder="Enter Issuing Place"
-                isRequired
-                value={drivingDateOfIssue}
-                
-                endContent={
-                  <span className="material-symbols-rounded">edit</span>
-                }
-              />
-              {/* <DatePicker
+            {withoutAadhaarChecked && (
+              <div>
+                <Note
+                  note={
+                    "As you have completed the process without Aadhaar verification, please provide the details of one of the IDs mentioned below. चूंकि आपने आधार सत्यापन के बिना प्रक्रिया पूरी की है, कृपया नीचे उल्लिखित आईडी में से किसी एक का विवरण प्रदान करें।"
+                  }
+                />
+                <div className="flex flex-col gap-8 mt-7">
+                  <Input
+                    type="text"
+                    label="Driving License number (ड्राइविंग लाइसेंस नंबर)"
+                    labelPlacement="outside"
+                    variant="bordered"
+                    radius="sm"
+                    placeholder="Enter driving licence number"
+                    isRequired
+                    value={drivingLicenseNumber}
+                    endContent={
+                      <span className="material-symbols-rounded">
+                        credit_card
+                      </span>
+                    }
+                    onChange={(e) => setDrivingLicenseNumber(e.target.value)}
+                  />
+                  <Input
+                    type="text"
+                    label="Issuing Authority. जारी करने वाला प्राधिकारी"
+                    labelPlacement="outside"
+                    variant="bordered"
+                    radius="sm"
+                    placeholder="Enter Issuing Authority"
+                    isRequired
+                    value={drivingIssuingAuthority}
+                    endContent={
+                      <span className="material-symbols-rounded">edit</span>
+                    }
+                    onChange={(e) => setPanCardNumber(e.target.value)}
+                  />
+                  <Input
+                    type="text"
+                    label="Place of issue. जारी करने का स्थान"
+                    labelPlacement="outside"
+                    variant="bordered"
+                    radius="sm"
+                    placeholder="Enter Issuing Place"
+                    isRequired
+                    value={drivingPlaceOfIssue}
+                    endContent={
+                      <span className="material-symbols-rounded">edit</span>
+                    }
+                  />
+                  <Input
+                    type="text"
+                    label="Place of issue. जारी करने का स्थान"
+                    labelPlacement="outside"
+                    variant="bordered"
+                    radius="sm"
+                    placeholder="Enter Issuing Place"
+                    isRequired
+                    value={drivingDateOfIssue}
+                    endContent={
+                      <span className="material-symbols-rounded">edit</span>
+                    }
+                  />
+                  {/* <DatePicker
                 className="col-span-3"
                 label="Date of issue"
                 labelPlacement="outside"
@@ -336,34 +356,38 @@ export default function Page() {
                 value={drivingDateOfIssue}
               /> */}
 
-              <DigiUpload
-                documentEng={"Driving License"}
-                documentHindi={"ड्राइविंग लाइसेंस"}
-              />
-            </div>
+                  <DigiUpload
+                    documentEng={"Driving License"}
+                    documentHindi={"ड्राइविंग लाइसेंस"}
+                  />
+                </div>
 
-            <p className="text-center font-medium my-12">or</p>
+                <p className="text-center font-medium my-12">or</p>
 
-            <div className="flex flex-col gap-8">
-              <Input
-                type="text"
-                label="PAN card number. पैन कार्ड नंबर"
-                labelPlacement="outside"
-                variant="bordered"
-                radius="sm"
-                placeholder="Enter PAN card number"
-                isRequired
-                value={panCardNumber}
-                readOnly
-                endContent={
-                  <span className="material-symbols-rounded">credit_card</span>
-                }
-              />
-              {/* <DigiUpload
+                <div className="flex flex-col gap-8">
+                  <Input
+                    type="text"
+                    label="PAN card number. पैन कार्ड नंबर"
+                    labelPlacement="outside"
+                    variant="bordered"
+                    radius="sm"
+                    placeholder="Enter PAN card number"
+                    isRequired
+                    value={panCardNumber}
+                    readOnly
+                    endContent={
+                      <span className="material-symbols-rounded">
+                        credit_card
+                      </span>
+                    }
+                  />
+                  {/* <DigiUpload
                 documentEng={"PAN card"}
                 documentHindi={"पैन कार्ड"}
               /> */}
-            </div>
+                </div>
+              </div>
+            )}
             {errorMessage && (
               <p className="text-red-500 text-sm mt-5">{errorMessage}</p>
             )}

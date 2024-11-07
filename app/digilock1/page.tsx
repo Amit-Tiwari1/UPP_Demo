@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 const DigilockerResponsePage = () => {
   const { notifySuccess, notifyError } = useNotifications();
   const [isClient, setIsClient] = useState(false);
-  const [isLoading, setIsLoading] = useState(true); // Loading state
+  const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
