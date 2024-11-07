@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 const DigilockerResponsePage = () => {
   const { notifySuccess, notifyError } = useNotifications();
   const [isClient, setIsClient] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // New loading state
   const router = useRouter();
 
   useEffect(() => {
@@ -33,28 +34,31 @@ const DigilockerResponsePage = () => {
               localStorage.setItem("loginToken", response.data.token);
 
               notifySuccess("Login successful!");
-
-
-              if (localStorage.getItem("loginToken")) {
-                router.push("https://upp-demo-1lij4ip3q-tech-amits-projects.vercel.app/proceed");
-              }
+              router.push("https://upp-demo-1lij4ip3q-tech-amits-projects.vercel.app/proceed");
             } else {
               notifyError(`Login failed: ${response.data.message}`);
             }
           } catch (error) {
             console.error("Error details:", error);
             notifyError("Error: Something went wrong");
+          } finally {
+            setIsLoading(false); // Stop loading after request is complete
           }
         };
 
         loginDigiLocker();
       } else {
         notifyError("Missing code.");
+        setIsLoading(false);
       }
     }
   }, [isClient, notifySuccess, notifyError, router]);
 
-  return <h1>hello</h1>;
+  return (
+    <div>
+      {isLoading ? <p>Loading...</p> : null}
+    </div>
+  );
 };
 
 export default DigilockerResponsePage;
