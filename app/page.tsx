@@ -28,7 +28,7 @@ const Home = (props: Props) => {
         
         localStorage.setItem("sessionId",newSessionId)
         setSessionId(newSessionId)
-        notifySuccess("Session created successfully!");
+        // notifySuccess("Session created successfully!");
       } catch (error) {
         console.error("Error creating session:", error);
         notifyError(`Failed to create session: ${error}`);
