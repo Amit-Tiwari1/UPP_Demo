@@ -49,6 +49,7 @@ const Home = (props: Props) => {
         "{{sessionId}}",
         sessionId
       );
+console.log("digilockerUrl is getting",digilockerUrl);
 
       if (!digilockerUrl) {
         console.error("DigiLocker URL is undefined.");
