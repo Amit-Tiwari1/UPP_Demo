@@ -86,7 +86,9 @@ export default function Registration() {
   });
 
 
-  
+  useEffect(()=>{
+    setFullName(`${firstName} ${middleName} ${lastName}`)
+  },[firstName,middleName,lastName])
 
   const validateForm = (): boolean => {
     let formErrors: Errors = {};
@@ -207,9 +209,7 @@ export default function Registration() {
     }
   };
 
-  useEffect(()=>{
-    setFullName(`${firstName} ${middleName} ${lastName}`)
-  },[firstName,middleName,lastName])
+ 
   return (
     <div className="grid grid-cols-1 border-3 border-gray-200 border rounded-t-lg">
    
