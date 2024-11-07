@@ -74,7 +74,7 @@ export default function page() {
   const handle12thCheckboxChange = ()=> {
     setisIntermediateEquivalent(!isIntermediateEquivalent)
   }
-  const handleTenthDetailsChange = (field, value) => {
+  const handleTenthDetailsChange = (field:any, value:any) => {
     setEducationForm(prevForm => ({
       ...prevForm,
       tenthDetails: {
@@ -83,7 +83,7 @@ export default function page() {
       },
     }));
   };
-  const handleTwelfthDetailsChange = (field, value) => {
+  const handleTwelfthDetailsChange = (field:any, value:any) => {
     setEducationForm(prevForm => ({
       ...prevForm,
       twelfthDetails: {
