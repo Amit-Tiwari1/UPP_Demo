@@ -11,8 +11,8 @@ import { Navbar } from "@/components/navbar";
 import Image from "next/image";
 import logo from "@/assets/images/logo.svg";
 import Link from "next/link";
-import SideNav from "@/components/SideNav";
-import Footer from "@/components/Footer";
+// import SideNav from "@/components/SideNav";
+// import Footer from "@/components/Footer";
 import NotificationProvider from "@/components/NotificationProvider";
 
 export const metadata: Metadata = {
