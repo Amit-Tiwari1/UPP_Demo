@@ -13,7 +13,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import Personal_Details from "../../../assets/images/Personal_Details.svg";
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, HtmlHTMLAttributes, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { CandidateRegistrationForm } from "@/config/Forms/Form";
 import axios from "axios";
@@ -46,6 +46,7 @@ export default function Registration() {
   const router = useRouter()
 
   const [firstName, setFirstName] = useState<string>("");
+  const [middleName, setMiddleName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
   const [fullName, setFullName] = useState<string>("");
   const [gender, setGender] = useState<string>("");
@@ -205,6 +206,10 @@ export default function Registration() {
       }
     }
   };
+
+  useEffect(()=>{
+    setFullName(`${firstName} ${middleName} ${lastName}`)
+  },[firstName,middleName,lastName])
   return (
     <div className="grid grid-cols-1 border-3 border-gray-200 border rounded-t-lg">
    
@@ -258,13 +263,16 @@ export default function Registration() {
               </div>
 
               <Input
-                type="text"
-                label="Middle Name (मध्य नाम)"
-                labelPlacement="outside"
-                variant="bordered"
-                radius="sm"
-                placeholder="Enter your middle name(optional)"
-              />
+  type="text"
+  label="Middle Name (मध्य नाम)"
+  labelPlacement="outside"
+  variant="bordered"
+  radius="sm"
+  placeholder="Enter your middle name (optional)"
+  value={middleName}
+  onChange={(e: ChangeEvent<HTMLInputElement>) => setMiddleName(e.target.value)}
+/>
+
               <div className="relative">
                 <Input
                   type="text"
@@ -303,15 +311,10 @@ export default function Registration() {
                   placeholder="Enter you full name"
                   isRequired
                   value={fullName}
-                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                    setFullName(e.target.value)
-                  }
+                readOnly
+                className="bg-gray-200 text-gray-500 cursor-not-allowed rounded-sm"
                 />
-                {errors.fullName && (
-                  <span className="text-red-500 text-sm absolute -bottom-5">
-                    {errors.fullName}
-                  </span>
-                )}
+              
               </div>
               <div className="md:col-span-3 mt-5 md:mt-0 relative">
                 <Select
