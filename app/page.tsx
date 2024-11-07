@@ -75,7 +75,7 @@ const Home = (props: Props) => {
       notifySuccess("Admin login successful");
     } catch (error) {
       console.error("Error during admin login:", error);
-      notifyError(`Error during admin login: ${error.message}`);
+      notifyError(`Error during admin login: ${error}`);
     }
   };
 
