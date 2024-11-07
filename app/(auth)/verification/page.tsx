@@ -38,6 +38,7 @@ export default function Page() {
   const router = useRouter();
   const totalSteps = 5;
   const currentStep = 4;
+  const isCompleted = false;
 
   useEffect(() => {
     const getLoginToken = localStorage.getItem("loginToken");
@@ -107,7 +108,7 @@ export default function Page() {
   return (
     <>
       <div className="grid grid-cols-1 border-3 border-gray-200 border rounded-t-lg">
-        <ProgressBar currentStep={currentStep} totalSteps={totalSteps} />
+        <ProgressBar currentStep={currentStep} totalSteps={totalSteps} isCompleted={isCompleted}/>
 
         <div className="flex items-center bg-green-600 text-white p-4 shadow-lg rounded-t-lg">
           <Image

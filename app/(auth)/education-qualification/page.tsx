@@ -117,11 +117,12 @@ export default function page() {
   
   const totalSteps = 5;
   const currentStep = 3;
+  const isCompleted = false;
 
   return (
     <div className="grid grid-cols-1 border-3 border-gray-200 border rounded-t-lg">
      
-        <ProgressBar currentStep={currentStep} totalSteps={totalSteps} />
+        <ProgressBar currentStep={currentStep} totalSteps={totalSteps} isCompleted={isCompleted}/>
       
       
    

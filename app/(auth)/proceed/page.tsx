@@ -15,7 +15,7 @@ import faqData from "@/components/Data/faqData";
 
 const totalSteps = 5;
 const currentStep = 1;
-const isCompleted = 0;
+const isCompleted = false;
 
 const RegistrationPage = () => {
   const [currentStep, setCurrentStep] = useState(1);

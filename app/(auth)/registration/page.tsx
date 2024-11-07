@@ -42,6 +42,7 @@ type Errors = {
 export default function Registration() {
   const currentStep = 2;
   const totalSteps = 5;
+  const isCompleted = false;
   const router = useRouter()
 
   const [firstName, setFirstName] = useState<string>("");
@@ -200,14 +201,14 @@ export default function Registration() {
           router.push("education-qualification");
         }
       } catch (error) {
-        console.error("Error submitting data:", error.response?.data || error.message);
+        console.error("Error submitting data:", error);
       }
     }
   };
   return (
     <div className="grid grid-cols-1 border-3 border-gray-200 border rounded-t-lg">
    
-   <ProgressBar currentStep={currentStep} totalSteps={totalSteps} />
+   <ProgressBar currentStep={currentStep} totalSteps={totalSteps} isCompleted={isCompleted}/>
         <div className="flex items-center bg-green-600 text-white p-4 shadow-lg rounded-t-lg">
           <Image
             src={Personal_Details}
