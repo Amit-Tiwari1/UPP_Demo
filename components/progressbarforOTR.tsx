@@ -5,7 +5,7 @@ import AcceptIcon from '../assets/images/accept-icon copy.svg';
 interface ProgressBarProps {
   currentStep: number;
   totalSteps: number;
-  isCompleted: boolean;
+  isCompleted?: boolean;
 }
 
 const ProgressBar: React.FC<ProgressBarProps> = ({ currentStep, totalSteps, isCompleted }) => {
